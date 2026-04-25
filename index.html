@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aulão MET — Inglês Completo para Aluno</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --panel-2: #f0f3fb;
+      --text: #172033;
+      --muted: #5f6b81;
+      --line: #dfe5f1;
+      --accent: #3b82f6;
+      --accent-2: #7c3aed;
+      --good: #0f766e;
+      --bad: #dc2626;
+      --shadow: 0 16px 45px rgba(15, 23, 42, .09);
+      --radius: 22px;
+      --font-scale: 1;
+    }
+    [data-theme="dark"] {
+      --bg: #0b1020;
+      --panel: #11182a;
+      --panel-2: #151f35;
+      --text: #eef4ff;
+      --muted: #a8b3c7;
+      --line: #27344f;
+      --accent: #60a5fa;
+      --accent-2: #a78bfa;
+      --good: #5eead4;
+      --bad: #f87171;
+      --shadow: 0 18px 45px rgba(0, 0, 0, .25);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 0%, rgba(59,130,246,.15), transparent 26rem), radial-gradient(circle at 90% 10%, rgba(124,58,237,.13), transparent 28rem), var(--bg);
+      color: var(--text);
+      font-size: calc(16px * var(--font-scale));
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .app { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+    aside {
+      position: sticky; top: 0; height: 100vh; overflow: auto;
+      border-right: 1px solid var(--line); background: color-mix(in srgb, var(--panel) 88%, transparent); backdrop-filter: blur(18px);
+      padding: 22px;
+    }
+    .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .logo { width: 46px; height: 46px; border-radius: 16px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: grid; place-items: center; color: white; font-weight: 900; box-shadow: var(--shadow); }
+    .brand h1 { font-size: 1.05rem; line-height: 1.2; margin: 0; }
+    .brand p { margin: 3px 0 0; color: var(--muted); font-size: .83rem; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px 0 20px; }
+    button, .button {
+      border: 1px solid var(--line); background: var(--panel-2); color: var(--text); border-radius: 14px; padding: 10px 12px; cursor: pointer; font-weight: 700;
+    }
+    button:hover { border-color: var(--accent); }
+    .toc { display: grid; gap: 8px; }
+    .toc a { text-decoration: none; color: var(--muted); padding: 9px 10px; border-radius: 12px; border: 1px solid transparent; font-size: .94rem; }
+    .toc a:hover { color: var(--text); background: var(--panel-2); border-color: var(--line); }
+    .progress-box { margin-top: 20px; padding: 14px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 16px; }
+    .progress-bar { height: 10px; background: rgba(128,128,128,.18); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    main { padding: 28px min(4vw, 56px) 70px; max-width: 1220px; width: 100%; }
+    .section-card {
+      background: color-mix(in srgb, var(--panel) 94%, transparent); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(22px, 3vw, 42px); margin: 0 0 24px;
+    }
+    .hero { overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.45fr .85fr; gap: 24px; align-items: stretch; }
+    .eyebrow { color: var(--accent); font-weight: 900; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; margin: 0 0 8px; }
+    h1 { font-size: clamp(2rem, 5vw, 4.5rem); line-height: .95; margin: 0 0 16px; letter-spacing: -.05em; }
+    h2 { font-size: clamp(1.55rem, 3vw, 2.35rem); line-height: 1.08; margin: 0 0 16px; letter-spacing: -.03em; }
+    h3 { margin-top: 28px; font-size: 1.28rem; }
+    h4 { margin-bottom: 6px; }
+    .lead { font-size: 1.15rem; color: var(--muted); max-width: 850px; }
+    .pill-row, .vocab-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .pill, .vocab-list span { padding: 8px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); font-weight: 700; font-size: .9rem; }
+    .exam-card { background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 16%, var(--panel)), color-mix(in srgb, var(--accent-2) 12%, var(--panel))); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+    .mini-stat { margin-top: 12px; padding: 12px; border-radius: 16px; background: color-mix(in srgb, var(--panel) 62%, transparent); border: 1px solid var(--line); }
+    .grid { display: grid; gap: 14px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .note, .teaching-box { padding: 16px; border: 1px solid var(--line); background: var(--panel-2); border-radius: 18px; }
+    .formula { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; padding: 14px 16px; border-radius: 16px; background: #0f172a; color: #e0f2fe; overflow-x: auto; }
+    [data-theme="dark"] .formula { background: #020617; }
+    .diagram { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 20px 0; }
+    .node { padding: 14px 16px; border-radius: 16px; background: var(--panel-2); border: 1px solid var(--line); font-weight: 900; }
+    .arrow { color: var(--accent); font-size: 1.4rem; font-weight: 900; }
+    table { width: 100%; border-collapse: collapse; margin: 18px 0; overflow: hidden; border-radius: 16px; }
+    th, td { border: 1px solid var(--line); padding: 12px 13px; text-align: left; vertical-align: top; }
+    th { background: var(--panel-2); }
+    .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .example-grid div { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 13px; }
+    .timeline { display: grid; gap: 12px; border-left: 3px solid var(--accent); padding-left: 16px; }
+    .timeline div { background: var(--panel-2); border: 1px solid var(--line); padding: 14px; border-radius: 16px; }
+    .checklist li { margin: 8px 0; }
+    .question-card { border: 1px solid var(--line); background: var(--panel); border-radius: 18px; padding: 16px; margin: 14px 0; }
+    .q-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 8px; }
+    .q-num { color: var(--accent); font-weight: 900; }
+    .q-topic { color: var(--muted); font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .options { display: grid; gap: 9px; margin-top: 12px; }
+    .option { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); cursor: pointer; }
+    .option input { margin-top: 5px; transform: scale(1.1); }
+    .option.selected { outline: 2px solid var(--accent); }
+
+    .listening-player { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 12px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); }
+    .listening-player button { padding: 8px 10px; border-radius: 12px; }
+    .voice-chip { color: var(--muted); font-size: .86rem; font-weight: 800; }
+    .listening-player.playing { outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+    .teacher-answer { margin-top: 12px; border-left: 4px solid var(--bad); background: color-mix(in srgb, var(--bad) 10%, var(--panel)); padding: 12px 14px; border-radius: 12px; }
+    .teacher-answer strong { color: var(--bad); }
+    .tip { color: var(--muted); font-size: .94rem; margin-top: 8px; }
+    .teacher-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 8px 12px; background: color-mix(in srgb, var(--bad) 13%, var(--panel)); border: 1px solid color-mix(in srgb, var(--bad) 40%, var(--line)); color: var(--bad); border-radius: 999px; font-weight: 900; }
+    .student-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 8px 12px; background: color-mix(in srgb, var(--accent) 13%, var(--panel)); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--accent); border-radius: 999px; font-weight: 900; }
+    .footer { color: var(--muted); text-align: center; padding: 26px; }
+    .mobile-menu { display: none; position: sticky; top: 0; z-index: 10; padding: 10px; background: var(--panel); border-bottom: 1px solid var(--line); }
+    @media (max-width: 920px) {
+      .app { grid-template-columns: 1fr; }
+      aside { position: relative; height: auto; }
+      .hero-grid, .grid.two, .grid.three, .example-grid { grid-template-columns: 1fr; }
+      main { padding: 16px; }
+      .mobile-menu { display: block; }
+    }
+    @media print {
+      aside, .controls, .mobile-menu { display: none; }
+      .app { display: block; }
+      body { background: white; color: black; }
+      .section-card { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="logo">MET</div>
+        <div>
+          <h1>Aulão MET</h1>
+          <p>Versão do aluno</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="themeBtn" type="button">🌗 Tema</button>
+        <button id="resetBtn" type="button">🧹 Limpar</button>
+        <button id="fontMinus" type="button">A−</button>
+        <button id="fontPlus" type="button">A+</button>
+      </div>
+      <nav class="toc">
+        <a href="#inicio">Início</a>
+        <a href="#mapa">1. Mapa da prova</a>
+        <a href="#listening">2. Listening completo</a>
+        <a href="#grammar-tenses">3. Grammar: tempos</a>
+        <a href="#grammar-structure">4. Grammar: estruturas</a>
+        <a href="#reading">5. Reading completo</a>
+        <a href="#vocabulary">6. Vocabulary</a>
+        <a href="#writing-speaking">7. Extra Writing/Speaking</a>
+        <a href="#mixed">8. Revisão mista</a>
+        <a href="#plano">9. Plano final</a>
+      </nav>
+      <div class="progress-box">
+        <strong>Questões marcadas</strong>
+        <div class="progress-bar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+        <p id="progressText">0 respondidas</p>
+      </div>
+    </aside>
+    <main>
+      <div class="student-badge">🎓 Versão do aluno: marque suas respostas sem gabarito visível</div>
+      
+<section id="inicio" class="hero section-card">
+  <div class="hero-grid">
+    <div>
+      <p class="eyebrow">Aulão de véspera • MET • Inglês cobrado na prova</p>
+      <h1>MET: Inglês completo para Listening, Grammar, Reading e Vocabulary</h1>
+      <p class="lead">Este material não é só “gabarito de simulado”. Ele ensina o inglês que aparece por trás das questões: como entender frases, reconhecer estruturas, interpretar áudio/texto e evitar pegadinhas de alternativa.</p>
+      <div class="pill-row">
+        <span class="pill">Listening: inferência, intenção, atitude</span>
+        <span class="pill">Grammar: estruturas B1–B2</span>
+        <span class="pill">Reading: main idea, detail, vocabulary</span>
+        <span class="pill">Vocabulary: chunks e false friends</span>
+      </div>
+    </div>
+    <div class="exam-card">
+      <h2>Como usar hoje</h2>
+      <ol class="checklist">
+        <li>Leia as aulas em ordem.</li>
+        <li>Faça os exercícios logo depois de cada assunto.</li>
+        <li>Marque as questões no próprio HTML.</li>
+        <li>Na versão do professor, confira o motivo de cada resposta.</li>
+      </ol>
+      <div class="mini-stat"><strong>Meta realista:</strong> dominar padrões, não decorar frases.</div>
+    </div>
+  </div>
+</section>
+
+<section id="mapa" class="section-card">
+  <h2>1. O mapa da prova: o que realmente está sendo testado</h2>
+  <p>Nos simulados, a parte objetiva aparece em três blocos: <strong>Listening</strong>, <strong>Grammar</strong> e <strong>Reading</strong>. Mesmo quando a pergunta parece simples, ela costuma testar uma habilidade específica: entender intenção, reconhecer uma estrutura gramatical, inferir uma informação ou localizar um detalhe.</p>
+  <div class="diagram">
+    <div class="node">Áudio ou texto</div><div class="arrow">→</div>
+    <div class="node">Ideia central</div><div class="arrow">→</div>
+    <div class="node">Função da frase</div><div class="arrow">→</div>
+    <div class="node">Alternativa correta</div>
+  </div>
+  <h3>As 7 habilidades escondidas nas questões</h3>
+  <div class="grid two">
+    <div class="note"><strong>Main idea</strong><br>Qual é o assunto principal? Não confunda com um detalhe verdadeiro.</div>
+    <div class="note"><strong>Detail</strong><br>Informação específica: horário, motivo, pessoa afetada, problema, decisão.</div>
+    <div class="note"><strong>Inference</strong><br>O texto/áudio não fala diretamente, mas deixa claro pela situação.</div>
+    <div class="note"><strong>Speaker purpose</strong><br>Por que a pessoa mencionou aquilo? Para sugerir, explicar, corrigir, tranquilizar?</div>
+    <div class="note"><strong>Attitude</strong><br>Tom emocional: pleased, worried, disappointed, surprised, supportive.</div>
+    <div class="note"><strong>Vocabulary in context</strong><br>O significado depende da frase, não da tradução isolada.</div>
+    <div class="note"><strong>Grammar control</strong><br>Verbo, preposição, pronome, conector e estrutura de frase.</div>
+  </div>
+  <h3>O erro que mais derruba</h3>
+  <p>Escolher uma alternativa só porque ela contém uma palavra que apareceu no áudio/texto. Isso é <strong>distrator</strong>. A alternativa correta costuma repetir a ideia com outras palavras.</p>
+</section>
+
+<section id="listening" class="section-card">
+  <h2>2. Listening: como entender mesmo ouvindo uma vez só</h2>
+  <p>No Listening, você precisa entender o sentido geral rapidamente. Como a gravação não se repete, seu objetivo não é traduzir cada palavra, mas capturar: <strong>situação</strong>, <strong>problema</strong>, <strong>decisão</strong>, <strong>motivo</strong> e <strong>tom</strong>.</p>
+  <h3>Part 1 — short conversations</h3>
+  <p>São diálogos curtos. Normalmente a pergunta cobra o que aconteceu, o que alguém quer, como alguém se sente, o que será feito em seguida ou por que uma informação foi mencionada.</p>
+  <div class="teaching-box">
+    <h4>Frases que mudam o sentido</h4>
+    <ul>
+      <li><strong>I thought...</strong> = eu achava uma coisa, mas pode haver correção depois.</li>
+      <li><strong>Actually...</strong> = correção ou informação contrária.</li>
+      <li><strong>At least...</strong> = tentativa de ver algo positivo.</li>
+      <li><strong>I’d rather...</strong> = preferência.</li>
+      <li><strong>You might want to...</strong> = sugestão educada.</li>
+      <li><strong>I’m afraid...</strong> = notícia negativa de forma educada.</li>
+    </ul>
+  </div>
+  <h3>Part 2 — longer conversations</h3>
+  <p>Em conversas longas, anote palavras-chave. Não tente escrever frases inteiras. Use colunas simples: <strong>quem?</strong>, <strong>problema?</strong>, <strong>opções?</strong>, <strong>decisão?</strong>.</p>
+  <table>
+    <thead><tr><th>Sinal no áudio</th><th>O que geralmente indica</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>But / however</td><td>Contraste; a parte depois é importante</td><td>I liked it, but it was too expensive.</td></tr>
+      <tr><td>So / therefore</td><td>Resultado ou decisão</td><td>So I’ll apply next semester.</td></tr>
+      <tr><td>Because / since</td><td>Motivo</td><td>Because the fee is lower.</td></tr>
+      <tr><td>First / next / finally</td><td>Sequência</td><td>First, submit the form.</td></tr>
+      <tr><td>Maybe / probably</td><td>Possibilidade, não certeza absoluta</td><td>It’ll probably arrive tomorrow.</td></tr>
+    </tbody>
+  </table>
+  <h3>Part 3 — short talks</h3>
+  <p>Os talks podem ser anúncios, mini-aulas, explicações profissionais ou orientações. Procure a estrutura: introdução do tema, detalhes principais, consequência e próximo passo.</p>
+  <div class="grid two">
+    <div class="note"><strong>Anúncio</strong><br>Quem é afetado? O que muda? Quando? O que fazer?</div>
+    <div class="note"><strong>Aula curta</strong><br>Qual é o tema? Qual teoria/exemplo? Qual conclusão?</div>
+    <div class="note"><strong>Orientação</strong><br>Passo 1, passo 2, requisito, exceção.</div>
+    <div class="note"><strong>Opinião</strong><br>O falante apoia, critica, duvida ou explica de forma neutra?</div>
+  </div>
+  <h3>Vocabulário de atitude</h3>
+  <p>Aprenda estes adjetivos porque aparecem muito em alternativas:</p>
+  <div class="vocab-list">
+    <span>pleased = satisfeito</span><span>disappointed = decepcionado</span><span>concerned = preocupado</span><span>relieved = aliviado</span><span>supportive = apoiador</span><span>uncertain = incerto</span><span>surprised = surpreso</span><span>unexcited = sem empolgação</span>
+  </div>
+  <h3>Exercícios de Listening</h3>
+  <div class="exercise" data-cat="listening"></div>
+</section>
+
+<section id="grammar-tenses" class="section-card">
+  <h2>3. Grammar I: tempos verbais que caem muito</h2>
+  <p>A prova não pergunta “qual é o nome do tempo verbal”. Ela te dá uma frase com lacuna e espera que você reconheça o tempo pelo contexto. Palavras como <strong>right now</strong>, <strong>for</strong>, <strong>since</strong>, <strong>by the time</strong> e <strong>if</strong> são pistas.</p>
+  <table>
+    <thead><tr><th>Estrutura</th><th>Uso</th><th>Exemplo</th><th>Pegadinha</th></tr></thead>
+    <tbody>
+      <tr><td>Present simple</td><td>rotina, fato geral</td><td>She works on Mondays.</td><td>Não use continuous para hábito comum.</td></tr>
+      <tr><td>Present continuous</td><td>ação acontecendo agora</td><td>It is raining right now.</td><td><em>right now</em> é pista forte.</td></tr>
+      <tr><td>Present perfect</td><td>passado ligado ao presente</td><td>They have lived here for years.</td><td>For + duração; since + início.</td></tr>
+      <tr><td>Past simple</td><td>ação terminada no passado</td><td>She visited Paris last year.</td><td>Com data específica, evite present perfect.</td></tr>
+      <tr><td>Past perfect</td><td>ação anterior a outra no passado</td><td>When I arrived, he had left.</td><td>Use para “passado do passado”.</td></tr>
+      <tr><td>Future with will</td><td>previsão/decisão futura</td><td>Enrollment will drop.</td><td>Depois de if no first conditional, use present.</td></tr>
+    </tbody>
+  </table>
+  <h3>Conditionals</h3>
+  <div class="grid two">
+    <div class="note"><strong>Zero conditional</strong><br>If + present, present. Verdades gerais: If water freezes, it expands.</div>
+    <div class="note"><strong>First conditional</strong><br>If + present, will + verb. Possível futuro: If it rains, we will stay home.</div>
+    <div class="note"><strong>Second conditional</strong><br>If + past, would + verb. Hipótese: If I had time, I would travel.</div>
+    <div class="note"><strong>Third conditional</strong><br>If + past perfect, would have + past participle. Passado impossível: If she had studied, she would have passed.</div>
+  </div>
+  <h3>Modals e modal perfect</h3>
+  <table>
+    <thead><tr><th>Modal</th><th>Sentido</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>should</td><td>conselho</td><td>You should review the instructions.</td></tr>
+      <tr><td>must</td><td>obrigação ou dedução forte</td><td>He must be tired.</td></tr>
+      <tr><td>might / may</td><td>possibilidade</td><td>The office might close early.</td></tr>
+      <tr><td>could</td><td>possibilidade/habilidade</td><td>She could solve it.</td></tr>
+      <tr><td>should have done</td><td>deveria ter feito, mas não fez</td><td>You should have called.</td></tr>
+      <tr><td>might have done</td><td>talvez tenha feito</td><td>He might have missed the bus.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="grammar-structure" class="section-card">
+  <h2>4. Grammar II: estrutura de frase, pronomes, voz passiva e conectores</h2>
+  <h3>Gerund x infinitive</h3>
+  <p>Alguns verbos pedem <strong>gerund</strong>; outros pedem <strong>to + verb</strong>. Essa é uma das pegadinhas mais comuns.</p>
+  <div class="grid two">
+    <div class="note"><strong>Gerund depois de:</strong><br>enjoy, avoid, finish, consider, keep, be used to.<br><em>She enjoys studying.</em></div>
+    <div class="note"><strong>Infinitive depois de:</strong><br>want, decide, choose, hope, plan, remind someone.<br><em>He decided to apply.</em></div>
+  </div>
+  <h3>Passive voice</h3>
+  <p>Use voz passiva quando o foco é a ação ou o objeto, não quem fez.</p>
+  <div class="formula">be + past participle → The report <strong>was submitted</strong> yesterday.</div>
+  <p>Estruturas avançadas frequentes:</p>
+  <ul>
+    <li><strong>is believed to have been built</strong> = acredita-se que foi construído.</li>
+    <li><strong>needs to be repaired</strong> = precisa ser consertado.</li>
+    <li><strong>had the documents printed</strong> = mandou/imprimiu os documentos por meio de alguém.</li>
+  </ul>
+  <h3>Pronouns</h3>
+  <table>
+    <thead><tr><th>Função</th><th>Forma</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>Sujeito</td><td>I, he, she, we, they</td><td>She called.</td></tr>
+      <tr><td>Objeto</td><td>me, him, her, us, them</td><td>between you and me</td></tr>
+      <tr><td>Possessivo adjetivo</td><td>my, your, his, her, our, their</td><td>her book</td></tr>
+      <tr><td>Possessivo pronome</td><td>mine, yours, his, hers, ours, theirs</td><td>The book is hers.</td></tr>
+    </tbody>
+  </table>
+  <h3>Relative clauses</h3>
+  <ul>
+    <li><strong>who</strong> para pessoas: The student who called...</li>
+    <li><strong>which</strong> para coisas/ideias: The policy, which was new...</li>
+    <li><strong>that</strong> para pessoas/coisas em frases restritivas: The book that I bought...</li>
+    <li><strong>whose</strong> para posse: The woman whose car broke down...</li>
+    <li><strong>where</strong> para lugar: The city where I live...</li>
+  </ul>
+  <h3>Inversion</h3>
+  <p>Quando expressões negativas/restritivas vêm no começo, a frase inverte como pergunta:</p>
+  <div class="example-grid">
+    <div><strong>Normal:</strong> I have rarely seen this.</div>
+    <div><strong>Inverted:</strong> Rarely <u>have I seen</u> this.</div>
+    <div><strong>Normal:</strong> She not only finished it...</div>
+    <div><strong>Inverted:</strong> Not only <u>did she finish</u> it...</div>
+  </div>
+  <h3>Conectores essenciais</h3>
+  <table>
+    <thead><tr><th>Ideia</th><th>Conectores</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>Contraste</td><td>although, even though, however, despite, whereas</td><td>Although it was hard, she passed.</td></tr>
+      <tr><td>Causa</td><td>because, since, due to</td><td>Because it rained, we stayed.</td></tr>
+      <tr><td>Resultado</td><td>therefore, as a result, so</td><td>It rained; therefore, we stayed.</td></tr>
+      <tr><td>Propósito</td><td>so that, in order to</td><td>She spoke slowly so that everyone understood.</td></tr>
+      <tr><td>Condição</td><td>if, unless, as long as</td><td>Unless we leave now, we’ll be late.</td></tr>
+    </tbody>
+  </table>
+  <h3>Exercícios de Grammar</h3>
+  <div class="exercise" data-cat="grammar"></div>
+</section>
+
+<section id="reading" class="section-card">
+  <h2>5. Reading: como ler rápido sem se perder</h2>
+  <p>A seção de Reading não mede apenas vocabulário. Ela mede se você consegue entender organização textual. O MET costuma usar textos informativos, explicativos, anúncios, reviews e textos com múltiplas seções.</p>
+  <h3>Tipos de pergunta e método</h3>
+  <table>
+    <thead><tr><th>Tipo</th><th>Como reconhecer</th><th>Método</th></tr></thead>
+    <tbody>
+      <tr><td>Main idea</td><td>What is the passage mainly about?</td><td>Leia introdução + conclusão + repetição de ideias.</td></tr>
+      <tr><td>Detail</td><td>According to the passage...</td><td>Volte ao trecho específico.</td></tr>
+      <tr><td>Inference</td><td>What can be inferred?</td><td>Escolha o que é sustentado pelo texto, sem exagerar.</td></tr>
+      <tr><td>Vocabulary</td><td>closest in meaning</td><td>Substitua a palavra na frase e teste sentido.</td></tr>
+      <tr><td>Reference</td><td>What does it/they/these refer to?</td><td>Procure o antecedente antes do pronome.</td></tr>
+      <tr><td>Purpose</td><td>Why does the author mention...?</td><td>Veja a função do exemplo no parágrafo.</td></tr>
+    </tbody>
+  </table>
+  <h3>Como fazer em menos tempo</h3>
+  <ol>
+    <li><strong>Leia o título/linha introdutória</strong> para saber o assunto.</li>
+    <li><strong>Passe os olhos no primeiro e último parágrafo</strong> para captar o foco.</li>
+    <li><strong>Leia a pergunta antes de caçar detalhe</strong>.</li>
+    <li><strong>Elimine extremos</strong>: always, never, completely, only, unless o texto realmente diga isso.</li>
+    <li><strong>Prefira paráfrase</strong>: a resposta correta frequentemente troca palavras, mas mantém a ideia.</li>
+  </ol>
+  <h3>Palavras que mostram organização</h3>
+  <div class="vocab-list">
+    <span>first / initially</span><span>however</span><span>therefore</span><span>for example</span><span>in contrast</span><span>as a result</span><span>while / whereas</span><span>in addition</span><span>overall</span><span>eventually</span>
+  </div>
+  <h3>Exercícios de Reading</h3>
+  <div class="exercise" data-cat="reading"></div>
+</section>
+
+<section id="vocabulary" class="section-card">
+  <h2>6. Vocabulary: inglês que aparece em questão e alternativa</h2>
+  <p>O vocabulário do MET é muito baseado em inglês geral, acadêmico leve e situações do cotidiano: universidade, trabalho, lojas, transporte, saúde, cidade, pesquisa, tecnologia, música e meio ambiente.</p>
+  <h3>False friends perigosos para brasileiros</h3>
+  <table>
+    <thead><tr><th>Palavra</th><th>Significado real</th><th>Cuidado</th></tr></thead>
+    <tbody>
+      <tr><td>Actually</td><td>na verdade</td><td>Não é “atualmente”.</td></tr>
+      <tr><td>Currently</td><td>atualmente</td><td>Não é “corretamente”.</td></tr>
+      <tr><td>Eventually</td><td>finalmente/depois de um tempo</td><td>Não é “talvez”.</td></tr>
+      <tr><td>College</td><td>faculdade/ensino superior</td><td>Não é colégio no sentido brasileiro comum.</td></tr>
+      <tr><td>Lecture</td><td>aula/palestra</td><td>Não é “leitura”.</td></tr>
+      <tr><td>Notice</td><td>aviso/perceber</td><td>Depende se é substantivo ou verbo.</td></tr>
+      <tr><td>Support</td><td>apoiar/sustentar</td><td>Não é apenas suporte técnico.</td></tr>
+    </tbody>
+  </table>
+  <h3>Chunks que valem pontos</h3>
+  <div class="grid three">
+    <div class="note"><strong>take place</strong><br>acontecer<br><em>The event takes place Friday.</em></div>
+    <div class="note"><strong>look forward to</strong><br>esperar com expectativa + gerund<br><em>I look forward to meeting you.</em></div>
+    <div class="note"><strong>be responsible for</strong><br>ser responsável por + gerund/noun</div>
+    <div class="note"><strong>be interested in</strong><br>ter interesse em + gerund/noun</div>
+    <div class="note"><strong>be capable of</strong><br>ser capaz de + gerund</div>
+    <div class="note"><strong>rather than</strong><br>em vez de</div>
+    <div class="note"><strong>as long as</strong><br>contanto que</div>
+    <div class="note"><strong>in spite of / despite</strong><br>apesar de</div>
+    <div class="note"><strong>according to</strong><br>de acordo com</div>
+  </div>
+  <h3>Phrasal verbs comuns</h3>
+  <table>
+    <thead><tr><th>Phrasal verb</th><th>Sentido</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>catch up with</td><td>conversar para atualizar / alcançar</td><td>I caught up with my friend.</td></tr>
+      <tr><td>figure out</td><td>entender/resolver</td><td>We figured out the problem.</td></tr>
+      <tr><td>point out</td><td>apontar/mencionar</td><td>She pointed out a mistake.</td></tr>
+      <tr><td>set up</td><td>organizar/configurar</td><td>They set up the room.</td></tr>
+      <tr><td>turn in</td><td>entregar</td><td>He turned in the assignment.</td></tr>
+      <tr><td>put off</td><td>adiar</td><td>The meeting was put off.</td></tr>
+      <tr><td>run into</td><td>encontrar por acaso / ter problema</td><td>We ran into delays.</td></tr>
+      <tr><td>go over</td><td>revisar</td><td>Let’s go over the notes.</td></tr>
+      <tr><td>see through</td><td>levar até o fim</td><td>She saw the project through.</td></tr>
+    </tbody>
+  </table>
+  <h3>Exercícios de Vocabulary</h3>
+  <div class="exercise" data-cat="vocabulary"></div>
+</section>
+
+<section id="writing-speaking" class="section-card">
+  <h2>7. Extra: se sua aplicação incluir Writing ou Speaking</h2>
+  <p>Os simulados anexados focam Listening, Reading e Grammar. Porém, algumas aplicações do MET podem envolver habilidades produtivas. Esta seção é um reforço rápido para não ser pego de surpresa.</p>
+  <h3>Writing: estrutura segura</h3>
+  <div class="teaching-box">
+    <p><strong>Parágrafo 1:</strong> responda diretamente ao tema e diga sua opinião.</p>
+    <p><strong>Parágrafo 2:</strong> dê um motivo forte + exemplo concreto.</p>
+    <p><strong>Parágrafo 3:</strong> dê segundo motivo ou contraste.</p>
+    <p><strong>Conclusão:</strong> retome a opinião com outras palavras.</p>
+  </div>
+  <h4>Frases úteis</h4>
+  <ul>
+    <li><em>In my opinion, ...</em></li>
+    <li><em>One important reason is that ...</em></li>
+    <li><em>For example, ...</em></li>
+    <li><em>Although some people believe ..., I think ...</em></li>
+    <li><em>For these reasons, ...</em></li>
+  </ul>
+  <h3>Speaking: resposta organizada</h3>
+  <p>Fale simples, mas completo: <strong>answer + reason + example + closing</strong>.</p>
+  <div class="formula">I think ___ because ___. For example, ___. So, ___.</div>
+</section>
+
+<section id="mixed" class="section-card">
+  <h2>8. Revisão mista de véspera</h2>
+  <p>Agora misture as habilidades. Essa parte treina o raciocínio da prova: identificar pista, eliminar distrator e escolher a alternativa mais sustentada.</p>
+  <div class="exercise" data-cat="mixed"></div>
+</section>
+
+<section id="plano" class="section-card">
+  <h2>9. Plano de estudo para hoje e amanhã</h2>
+  <div class="timeline">
+    <div><strong>Hoje — bloco 1</strong><br>Grammar: conditionals, tenses, gerund/infinitive, passive, connectors.</div>
+    <div><strong>Hoje — bloco 2</strong><br>Reading: leia perguntas antes, pratique main idea/detail/inference.</div>
+    <div><strong>Hoje — bloco 3</strong><br>Listening: treine reconhecer intenção, contraste, atitude e próximo passo.</div>
+    <div><strong>Amanhã antes da prova</strong><br>Revise apenas tabelas, chunks e erros marcados. Não tente aprender assunto novo pesado.</div>
+  </div>
+  <h3>Checklist final</h3>
+  <ul class="checklist">
+    <li>Em Grammar, procurar pista de tempo verbal antes de olhar alternativas.</li>
+    <li>Em Reading, não escolher alternativa extrema sem prova textual.</li>
+    <li>Em Listening, prestar atenção depois de but/however/actually.</li>
+    <li>Em Vocabulary, substituir a palavra no contexto.</li>
+    <li>Se estiver em dúvida entre duas, eliminar a que adiciona informação não mencionada.</li>
+  </ul>
+</section>
+
+      <p class="footer">Material autoral de estudo, inspirado nos tipos de habilidades cobradas no MET. Use a versão do professor para conferir gabarito e explicações.</p>
+    </main>
+  </div>
+
+<script>
+const TEACHER_MODE = false;
+const QUESTIONS = [{"cat": "listening", "prompt": "Treino de Listening — Short conversation: <br><strong>Woman:</strong> I thought the seminar started at 2, but the notice says it was moved to 4 in Room 218.<br><strong>Man:</strong> Good thing you checked before we went across campus.<br><em>Question:</em> What does the woman say about the seminar?", "options": ["Its time and location changed.", "It was canceled.", "It already finished.", "It will be online."], "answer": "A", "why": "A pista central é 'moved to 4 in Room 218'. A resposta correta combina mudança de horário e de local; as outras alternativas inventam informação.", "tip": "No Listening, procure a ideia completa, não uma palavra solta."}, {"cat": "listening", "prompt": "<strong>Man:</strong> I printed my registration form, but I left the advisor signature blank.<br><strong>Woman:</strong> Then the office probably won’t accept it today.<br><em>Question:</em> What problem does the man have?", "options": ["He forgot to print the form.", "He forgot to get a required signature.", "He went to the wrong office.", "He missed the registration deadline."], "answer": "B", "why": "'left the advisor signature blank' indica que falta uma assinatura obrigatória.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Woman:</strong> The hotel looks nice, but if rent is that high, I’d rather live farther from campus.<br><strong>Man:</strong> Transportation might cost less than the difference in rent.<br><em>Question:</em> What might influence the woman’s decision?", "options": ["The hotel’s restaurant.", "The size of the campus.", "The cost of housing and transportation.", "The man’s class schedule."], "answer": "C", "why": "O diálogo compara aluguel alto com possível economia de transporte. É uma questão de custo total.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Professor:</strong> Your essay has strong examples, but the paragraphs don’t connect smoothly. Try adding transition phrases between ideas.<br><em>Question:</em> What is the professor mainly suggesting?", "options": ["Choosing a new topic.", "Removing all examples.", "Making the essay shorter.", "Improving organization between ideas."], "answer": "D", "why": "'paragraphs don’t connect smoothly' e 'transition phrases' apontam para organização/coerência textual.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Announcement:</strong> Because of construction near the west entrance, employees on the second floor should use the east doors until Friday.<br><em>Question:</em> Who is most affected?", "options": ["Employees on a specific floor.", "All visitors to the building.", "Construction workers only.", "People attending Friday’s meeting."], "answer": "A", "why": "A informação restringe: 'employees on the second floor'. MET costuma testar quem é afetado por anúncios.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Student:</strong> I’m not sure I can join the dance class. I usually work late.<br><strong>Staff:</strong> We also offer weekend sessions, and the unlimited pass includes all classes.<br><em>Question:</em> Why does the staff mention weekend sessions?", "options": ["To say weekday classes are canceled.", "To show there may be a schedule that fits.", "To compare teachers’ salaries.", "To explain why the pass expired."], "answer": "B", "why": "A função da fala é resolver a objeção do aluno: ele trabalha tarde, então fim de semana pode funcionar.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Woman:</strong> I expected the line to move faster. <strong>Man:</strong> At least the museum is giving discounts while we wait.<br><em>Question:</em> How does the man probably feel?", "options": ["He is angry at the woman.", "He wants to leave immediately.", "He is trying to stay positive.", "He has already seen the exhibit."], "answer": "C", "why": "'At least...' geralmente apresenta um lado positivo em uma situação ruim.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Speaker:</strong> I’ll describe the research first, then Dr. Kim will demonstrate the device used to collect the data.<br><em>Question:</em> What will probably happen next?", "options": ["Dr. Kim will criticize the research.", "The audience will leave.", "The device will be sold.", "The speaker will begin explaining the research."], "answer": "D", "why": "Sequência explícita: 'first' indica o próximo passo imediato.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Woman:</strong> I was going to return the jacket, but when I found out alterations were free, I decided to keep it.<br><em>Question:</em> What did the woman decide to do?", "options": ["Keep the jacket after getting it adjusted.", "Exchange the jacket.", "Buy a second jacket.", "Complain to the manager."], "answer": "A", "why": "'decided to keep it' é a decisão; 'alterations were free' explica o motivo.", "tip": ""}, {"cat": "listening", "prompt": "<strong>Man:</strong> I thought the candidate interviews would be disappointing, but several applicants had exactly the experience we need.<br><em>Question:</em> How does the man feel about the candidates?", "options": ["Confused.", "Pleased.", "Offended.", "Uncertain about every applicant."], "answer": "B", "why": "O contraste 'I thought... but...' muda a expectativa para uma avaliação positiva.", "tip": ""}, {"cat": "grammar", "prompt": "If Lina ______ earlier, she would have caught the train.", "options": ["leaves", "would leave", "had left", "has left"], "answer": "C", "why": "Third conditional: if + past perfect, would have + past participle.", "tip": ""}, {"cat": "grammar", "prompt": "Marco enjoys ______ his classmates after the weekend.", "options": ["catching up", "to catch with", "catch him up", "catching up with"], "answer": "D", "why": "Enjoy + gerund; 'catch up with someone' = conversar para atualizar novidades.", "tip": ""}, {"cat": "grammar", "prompt": "Please place the folder between Ana and ______.", "options": ["me", "I", "mine", "my"], "answer": "A", "why": "Depois de preposição ('between'), usa-se pronome objeto: me, him, her, us, them.", "tip": ""}, {"cat": "grammar", "prompt": "The old temple is believed ______ during the twelfth century.", "options": ["to build", "to have been built", "that built", "being built"], "answer": "B", "why": "Estrutura impessoal: is believed to have been + past participle para ação passada em voz passiva.", "tip": ""}, {"cat": "grammar", "prompt": "This is ______ explanation I have heard today.", "options": ["clearer", "most clear than", "the clearest", "clear"], "answer": "C", "why": "Superlativo com 'the': the clearest explanation.", "tip": ""}, {"cat": "grammar", "prompt": "All students ______ access to the online library.", "options": ["should", "should to have", "have should", "should have"], "answer": "D", "why": "Modal + base verb: should have. Não se usa 'to' depois de should.", "tip": ""}, {"cat": "grammar", "prompt": "The project is ______ finished; we only need to check the references.", "options": ["almost", "yet", "far", "soon"], "answer": "A", "why": "Almost = quase. A frase indica que falta pouco.", "tip": ""}, {"cat": "grammar", "prompt": "The café did not lose customers; ______, sales increased in March.", "options": ["despite", "on the contrary", "under no circumstances", "instead of"], "answer": "B", "why": "On the contrary corrige uma ideia anterior e apresenta o oposto.", "tip": ""}, {"cat": "grammar", "prompt": "Students who read every day are capable ______ faster.", "options": ["to improve", "improvement", "of improving", "improve"], "answer": "C", "why": "Collocation: be capable of + gerund.", "tip": ""}, {"cat": "grammar", "prompt": "Dana has one tablet, but she wants to buy ______.", "options": ["other", "other one", "more one", "another"], "answer": "D", "why": "Another = mais um/uma unidade adicional.", "tip": ""}, {"cat": "grammar", "prompt": "Some workers are more concerned about the schedule ______.", "options": ["than others", "that others", "other than", "than them are"], "answer": "A", "why": "Comparativo: more + adjective + than.", "tip": ""}, {"cat": "grammar", "prompt": "Even though the students ______ detailed instructions, some still asked basic questions.", "options": ["has", "did have", "having", "have been"], "answer": "B", "why": "'Did have' dá ênfase no passado: eles realmente tinham instruções.", "tip": ""}, {"cat": "grammar", "prompt": "There are no seats here, so let’s sit ______.", "options": ["where else", "other place", "somewhere else", "anyplace of"], "answer": "C", "why": "Somewhere else = em outro lugar.", "tip": ""}, {"cat": "grammar", "prompt": "Rarely ______ such a thoughtful presentation.", "options": ["I have seen", "that I saw", "did I seeing", "have I seen"], "answer": "D", "why": "Inversão após advérbio negativo/restritivo no início: Rarely have I seen...", "tip": ""}, {"cat": "grammar", "prompt": "Please keep me ______ on any changes to the schedule.", "options": ["posted", "company", "touching", "hold"], "answer": "A", "why": "Keep someone posted = manter alguém informado.", "tip": ""}, {"cat": "grammar", "prompt": "______ notebook on the desk belongs to Clara.", "options": ["These", "This", "Those", "Theirs"], "answer": "B", "why": "Notebook é singular e está próximo: this notebook.", "tip": ""}, {"cat": "grammar", "prompt": "He chose ______ at City University because of its engineering program.", "options": ["studying", "study", "to study", "studying for"], "answer": "C", "why": "Choose + infinitive: chose to study.", "tip": ""}, {"cat": "grammar", "prompt": "If my manager had needed the report, she ______ it.", "options": ["would ask", "had asked", "has asked about", "would have asked for"], "answer": "D", "why": "Third conditional: would have + past participle. 'Ask for something' = pedir algo.", "tip": ""}, {"cat": "grammar", "prompt": "Many people prefer tea ______ coffee in the evening.", "options": ["to", "than", "above", "versus"], "answer": "A", "why": "Prefer X to Y é a forma padrão.", "tip": ""}, {"cat": "grammar", "prompt": "The course is challenging, but students who ______ will improve a lot.", "options": ["take it over", "see it through", "save it up", "make it out"], "answer": "B", "why": "See something through = continuar até o fim.", "tip": ""}, {"cat": "grammar", "prompt": "The line ______ tickets stretched around the block.", "options": ["of buying", "that tickets", "to buy", "for tickets were bought"], "answer": "C", "why": "Infinitivo de propósito: a line to buy tickets.", "tip": ""}, {"cat": "grammar", "prompt": "Her new article is ______ the previous one.", "options": ["so interesting than", "more interested that", "as much interested", "more interesting than"], "answer": "D", "why": "Comparativo: more interesting than.", "tip": ""}, {"cat": "grammar", "prompt": "They postponed the picnic because it ______ heavily right now.", "options": ["is raining", "rains", "has been raining yesterday", "will rain now"], "answer": "A", "why": "Right now pede present continuous: is raining.", "tip": ""}, {"cat": "grammar", "prompt": "Employee ID cards are replaced ______ five years.", "options": ["any", "every", "all of", "of each"], "answer": "B", "why": "Every + período indica frequência regular.", "tip": ""}, {"cat": "grammar", "prompt": "The museum has displayed local art ______ decades.", "options": ["since", "until", "for", "by"], "answer": "C", "why": "For + duração; since + ponto inicial específico.", "tip": ""}, {"cat": "grammar", "prompt": "The teacher wondered ______ best way to motivate the class.", "options": ["how it could be", "what should have been a", "how it will the", "what would be the"], "answer": "D", "why": "Pergunta indireta: wondered what would be the best way.", "tip": ""}, {"cat": "grammar", "prompt": "______ the number of buses will reduce traffic.", "options": ["Increasing", "By increased", "To increase in", "If increasing in"], "answer": "A", "why": "Gerund como sujeito: Increasing the number...", "tip": ""}, {"cat": "grammar", "prompt": "My coach ______ for twenty minutes to demonstrate the routine.", "options": ["sung", "sang", "was used to sing", "used to singing"], "answer": "B", "why": "Past simple regular/irregular em ação passada completa: sang.", "tip": ""}, {"cat": "grammar", "prompt": "Clear presentations are short and focused, and they ______ time for questions.", "options": ["allows", "are allowing that", "allow", "have allowed to"], "answer": "C", "why": "Sujeito plural 'presentations' + verbo base: allow.", "tip": ""}, {"cat": "grammar", "prompt": "The flowers would have survived if they ______ from the frost.", "options": ["are protecting", "protected", "had protecting", "had been protected"], "answer": "D", "why": "Third conditional passivo: if + had been + past participle.", "tip": ""}, {"cat": "grammar", "prompt": "The children helped ______ put on their coats.", "options": ["each other", "one and the other", "were each", "each others"], "answer": "A", "why": "Each other = um ao outro.", "tip": ""}, {"cat": "grammar", "prompt": "Employees who ______ time off in July must notify HR.", "options": ["wish to be taken", "wish to take", "will be wishing they take", "will take their wish"], "answer": "B", "why": "Wish + infinitive: wish to take time off.", "tip": ""}, {"cat": "grammar", "prompt": "It would have been nice ______ with you, but I couldn’t afford the trip.", "options": ["had traveled", "have to travel", "to have traveled", "to travel having"], "answer": "C", "why": "Perfect infinitive: to have traveled indica uma ação que não aconteceu no passado.", "tip": ""}, {"cat": "grammar", "prompt": "Never before ______ so many people attended the festival.", "options": ["have", "has", "will", "had"], "answer": "D", "why": "Com 'Never before' no passado anterior a outro ponto, a forma natural é 'had so many people attended...' A inversão coloca auxiliar antes do sujeito.", "tip": ""}, {"cat": "grammar", "prompt": "It was not until Maya started college ______ she became interested in biology.", "options": ["that", "when", "before", "to"], "answer": "A", "why": "Estrutura enfática: It was not until... that...", "tip": ""}, {"cat": "grammar", "prompt": "The newspaper sent one reporter, ______ two photographers, to the event.", "options": ["and together", "along with", "as well", "to start from"], "answer": "B", "why": "Along with = junto com/além de.", "tip": ""}, {"cat": "grammar", "prompt": "If the school raises tuition, enrollment ______.", "options": ["would have dropped", "dropped", "will drop", "had dropped"], "answer": "C", "why": "First conditional: if + present simple, will + verb.", "tip": ""}, {"cat": "grammar", "prompt": "Lucas ______ takes the bus; he usually walks.", "options": ["always", "every", "usually has", "hardly ever"], "answer": "D", "why": "Hardly ever = quase nunca; combina com 'usually walks'.", "tip": ""}, {"cat": "grammar", "prompt": "______ we change our topic, we may not find enough sources.", "options": ["Unless", "Whether", "Rather than", "If we will"], "answer": "A", "why": "Unless = se não. A frase diz que, sem mudar o tópico, faltariam fontes.", "tip": ""}, {"cat": "grammar", "prompt": "______ your laptop still works well, you don’t need a new one.", "options": ["Although", "As long as", "In spite of", "In order that"], "answer": "B", "why": "As long as = desde que/contanto que.", "tip": ""}, {"cat": "grammar", "prompt": "The report, ______ was published yesterday, explains the new policy.", "options": ["who", "where", "which", "what"], "answer": "C", "why": "Which retoma coisa/ideia; oração relativa não restritiva usa vírgulas.", "tip": ""}, {"cat": "grammar", "prompt": "The woman ______ car was damaged called the insurance company.", "options": ["which", "who", "where", "whose"], "answer": "D", "why": "Whose indica posse: a mulher cujo carro...", "tip": ""}, {"cat": "grammar", "prompt": "I’m used to ______ early for work.", "options": ["waking up", "wake up", "woke up", "to wake up"], "answer": "A", "why": "Be used to + gerund = estar acostumado a.", "tip": ""}, {"cat": "grammar", "prompt": "The article was difficult ______ it contained many technical terms.", "options": ["although", "because", "despite", "therefore"], "answer": "B", "why": "Because introduz causa.", "tip": ""}, {"cat": "grammar", "prompt": "The manager had the documents ______ before the meeting.", "options": ["print", "printing", "printed", "to print"], "answer": "C", "why": "Causative: have something done = had the documents printed.", "tip": ""}, {"cat": "grammar", "prompt": "Not only ______ the deadline, but she also improved the design.", "options": ["she met", "has she meeting", "she meets", "did she meet"], "answer": "D", "why": "Not only no início pede inversão: did she meet.", "tip": ""}, {"cat": "grammar", "prompt": "The instructions were ______ confusing that several students asked for help.", "options": ["so", "such", "too", "enough"], "answer": "A", "why": "So + adjective + that.", "tip": ""}, {"cat": "grammar", "prompt": "It was ______ an interesting lecture that everyone stayed until the end.", "options": ["so", "such", "too", "enough"], "answer": "B", "why": "Such + adjective + noun + that.", "tip": ""}, {"cat": "grammar", "prompt": "The equipment needs ______ before the lab opens.", "options": ["to cleaning", "clean", "to be cleaned", "being clean"], "answer": "C", "why": "Need + passive infinitive: needs to be cleaned.", "tip": ""}, {"cat": "grammar", "prompt": "She reminded me ______ the application before Friday.", "options": ["submitting", "submit", "submitted", "to submit"], "answer": "D", "why": "Remind someone to do something.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Community Gardens</strong><br>\nMany neighborhoods are turning empty lots into community gardens. Supporters say these gardens provide fresh produce, give residents a reason to meet one another, and make streets more attractive. However, successful gardens require more than enthusiasm. Volunteers must agree on schedules, watering responsibilities, and rules for harvesting. When these details are ignored, gardens may quickly become neglected. For this reason, cities that support community gardens often provide coordinators who help residents organize the work.\n<br><em>Question:</em> What is the main idea of the passage?", "options": ["Community gardens can be beneficial, but they need organization.", "Cities should ban gardens in empty lots.", "Fresh produce is less important than attractive streets.", "Volunteers usually refuse to work together."], "answer": "A", "why": "O texto mostra benefícios e depois destaca a necessidade de organização.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Community Gardens</strong><br>\nMany neighborhoods are turning empty lots into community gardens. Supporters say these gardens provide fresh produce, give residents a reason to meet one another, and make streets more attractive. However, successful gardens require more than enthusiasm. Volunteers must agree on schedules, watering responsibilities, and rules for harvesting. When these details are ignored, gardens may quickly become neglected. For this reason, cities that support community gardens often provide coordinators who help residents organize the work.\n<br><em>Question:</em> Why does the author mention schedules and watering responsibilities?", "options": ["To explain why produce is expensive.", "To give examples of practical planning.", "To criticize city employees.", "To describe different kinds of plants."], "answer": "B", "why": "São exemplos de detalhes que precisam ser combinados para o jardim funcionar.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Community Gardens</strong><br>\nMany neighborhoods are turning empty lots into community gardens. Supporters say these gardens provide fresh produce, give residents a reason to meet one another, and make streets more attractive. However, successful gardens require more than enthusiasm. Volunteers must agree on schedules, watering responsibilities, and rules for harvesting. When these details are ignored, gardens may quickly become neglected. For this reason, cities that support community gardens often provide coordinators who help residents organize the work.\n<br><em>Question:</em> The word <strong>neglected</strong> is closest in meaning to:", "options": ["newly designed", "carefully protected", "ignored or poorly cared for", "officially approved"], "answer": "C", "why": "Neglected = abandonado, mal cuidado.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Community Gardens</strong><br>\nMany neighborhoods are turning empty lots into community gardens. Supporters say these gardens provide fresh produce, give residents a reason to meet one another, and make streets more attractive. However, successful gardens require more than enthusiasm. Volunteers must agree on schedules, watering responsibilities, and rules for harvesting. When these details are ignored, gardens may quickly become neglected. For this reason, cities that support community gardens often provide coordinators who help residents organize the work.\n<br><em>Question:</em> What can be inferred about coordinators?", "options": ["They decide what each resident eats.", "They replace all volunteers.", "They sell the produce.", "They help prevent organizational problems."], "answer": "D", "why": "Como cidades fornecem coordenadores para ajudar a organizar, infere-se que eles evitam problemas de gestão.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Community Gardens</strong><br>\nMany neighborhoods are turning empty lots into community gardens. Supporters say these gardens provide fresh produce, give residents a reason to meet one another, and make streets more attractive. However, successful gardens require more than enthusiasm. Volunteers must agree on schedules, watering responsibilities, and rules for harvesting. When these details are ignored, gardens may quickly become neglected. For this reason, cities that support community gardens often provide coordinators who help residents organize the work.\n<br><em>Question:</em> What is the author’s attitude?", "options": ["Balanced and practical.", "Angry and insulting.", "Completely opposed.", "Uninterested."], "answer": "A", "why": "O autor reconhece benefícios, mas alerta para condições práticas.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Remote Work</strong><br>\nRemote work has changed how some companies think about productivity. Managers once assumed that employees needed to be physically present to collaborate well. After several years of experimentation, many organizations have adopted hybrid schedules instead. These schedules allow workers to complete focused tasks at home while reserving office days for meetings, training, and team planning. Still, hybrid work is not a universal solution. New employees may need more face-to-face support, and some jobs require equipment that cannot easily be moved.\n<br><em>Question:</em> What does the passage mainly discuss?", "options": ["Why all offices should close permanently.", "The advantages and limits of hybrid work.", "How to buy office equipment.", "The history of employee training."], "answer": "B", "why": "O texto apresenta vantagens do híbrido e limitações.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Remote Work</strong><br>\nRemote work has changed how some companies think about productivity. Managers once assumed that employees needed to be physically present to collaborate well. After several years of experimentation, many organizations have adopted hybrid schedules instead. These schedules allow workers to complete focused tasks at home while reserving office days for meetings, training, and team planning. Still, hybrid work is not a universal solution. New employees may need more face-to-face support, and some jobs require equipment that cannot easily be moved.\n<br><em>Question:</em> In the passage, <strong>these schedules</strong> refers to:", "options": ["focused tasks", "organizations", "hybrid schedules", "office days"], "answer": "C", "why": "O antecedente imediato é 'hybrid schedules'.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Remote Work</strong><br>\nRemote work has changed how some companies think about productivity. Managers once assumed that employees needed to be physically present to collaborate well. After several years of experimentation, many organizations have adopted hybrid schedules instead. These schedules allow workers to complete focused tasks at home while reserving office days for meetings, training, and team planning. Still, hybrid work is not a universal solution. New employees may need more face-to-face support, and some jobs require equipment that cannot easily be moved.\n<br><em>Question:</em> Why might office days be useful?", "options": ["They eliminate the need for managers.", "They make all equipment portable.", "They prevent employees from working at home.", "They can be used for meetings and team planning."], "answer": "D", "why": "O texto diz que dias no escritório são reservados para meetings, training, and team planning.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Remote Work</strong><br>\nRemote work has changed how some companies think about productivity. Managers once assumed that employees needed to be physically present to collaborate well. After several years of experimentation, many organizations have adopted hybrid schedules instead. These schedules allow workers to complete focused tasks at home while reserving office days for meetings, training, and team planning. Still, hybrid work is not a universal solution. New employees may need more face-to-face support, and some jobs require equipment that cannot easily be moved.\n<br><em>Question:</em> What does <strong>universal</strong> mean in this context?", "options": ["Suitable for every situation", "Very expensive", "Recently invented", "Physically present"], "answer": "A", "why": "Universal = aplicável a todos os casos.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Passage — Remote Work</strong><br>\nRemote work has changed how some companies think about productivity. Managers once assumed that employees needed to be physically present to collaborate well. After several years of experimentation, many organizations have adopted hybrid schedules instead. These schedules allow workers to complete focused tasks at home while reserving office days for meetings, training, and team planning. Still, hybrid work is not a universal solution. New employees may need more face-to-face support, and some jobs require equipment that cannot easily be moved.\n<br><em>Question:</em> What can be inferred about new employees?", "options": ["They never work well remotely.", "They may benefit from more in-person guidance.", "They do not need training.", "They are responsible for moving equipment."], "answer": "B", "why": "'may need more face-to-face support' indica apoio presencial.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Multiple Texts — Weekend Activities</strong><br>\n<strong>A. City Museum Notice:</strong> The museum will offer free entrance on Saturday morning. Visitors should reserve a time online because space is limited.<br>\n<strong>B. Park Volunteer Post:</strong> Volunteers will meet at 8 a.m. to clean walking trails. Gloves and bags will be provided, but participants should bring water.<br>\n<strong>C. Music Café Review:</strong> The café’s new jazz night is relaxed and friendly. The food is simple, but the musicians are excellent.\n<br><em>Question:</em> Which activity requires advance reservation?", "options": ["The trail cleanup", "The jazz night", "The museum visit", "All three activities"], "answer": "C", "why": "Texto A diz: reserve a time online.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Multiple Texts — Weekend Activities</strong><br>\n<strong>A. City Museum Notice:</strong> The museum will offer free entrance on Saturday morning. Visitors should reserve a time online because space is limited.<br>\n<strong>B. Park Volunteer Post:</strong> Volunteers will meet at 8 a.m. to clean walking trails. Gloves and bags will be provided, but participants should bring water.<br>\n<strong>C. Music Café Review:</strong> The café’s new jazz night is relaxed and friendly. The food is simple, but the musicians are excellent.\n<br><em>Question:</em> Which text gives a positive opinion about performers?", "options": ["Text A", "Text B", "Texts A and B", "Text C"], "answer": "D", "why": "Texto C: 'the musicians are excellent'.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Multiple Texts — Weekend Activities</strong><br>\n<strong>A. City Museum Notice:</strong> The museum will offer free entrance on Saturday morning. Visitors should reserve a time online because space is limited.<br>\n<strong>B. Park Volunteer Post:</strong> Volunteers will meet at 8 a.m. to clean walking trails. Gloves and bags will be provided, but participants should bring water.<br>\n<strong>C. Music Café Review:</strong> The café’s new jazz night is relaxed and friendly. The food is simple, but the musicians are excellent.\n<br><em>Question:</em> What should volunteers bring?", "options": ["Water", "Gloves", "Bags", "Tickets"], "answer": "A", "why": "Texto B diz que luvas e sacos serão fornecidos, mas água deve ser levada.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Multiple Texts — Weekend Activities</strong><br>\n<strong>A. City Museum Notice:</strong> The museum will offer free entrance on Saturday morning. Visitors should reserve a time online because space is limited.<br>\n<strong>B. Park Volunteer Post:</strong> Volunteers will meet at 8 a.m. to clean walking trails. Gloves and bags will be provided, but participants should bring water.<br>\n<strong>C. Music Café Review:</strong> The café’s new jazz night is relaxed and friendly. The food is simple, but the musicians are excellent.\n<br><em>Question:</em> What is the purpose of Text B?", "options": ["To review a restaurant.", "To recruit or inform volunteers.", "To sell museum tickets.", "To announce a concert cancellation."], "answer": "B", "why": "É um post com instruções para voluntários.", "tip": ""}, {"cat": "reading", "prompt": "<strong>Multiple Texts — Weekend Activities</strong><br>\n<strong>A. City Museum Notice:</strong> The museum will offer free entrance on Saturday morning. Visitors should reserve a time online because space is limited.<br>\n<strong>B. Park Volunteer Post:</strong> Volunteers will meet at 8 a.m. to clean walking trails. Gloves and bags will be provided, but participants should bring water.<br>\n<strong>C. Music Café Review:</strong> The café’s new jazz night is relaxed and friendly. The food is simple, but the musicians are excellent.\n<br><em>Question:</em> What do Texts A and B have in common?", "options": ["They are both restaurant reviews.", "They both require musical experience.", "They give practical instructions before attending.", "They both complain about prices."], "answer": "C", "why": "A pede reserva; B pede água e informa horário/material.", "tip": ""}, {"cat": "vocabulary", "prompt": "In reading passages, <strong>account for</strong> usually means:", "options": ["pay a bill", "forget details", "remove evidence", "explain or be the reason for"], "answer": "D", "why": "Em contexto acadêmico, 'account for' = explicar, justificar.", "tip": ""}, {"cat": "vocabulary", "prompt": "The phrase <strong>on the contrary</strong> introduces:", "options": ["an opposite correction", "a similar example", "a time sequence", "a definition"], "answer": "A", "why": "Ela corrige uma ideia anterior e apresenta o contrário.", "tip": ""}, {"cat": "vocabulary", "prompt": "<strong>Despite</strong> is closest to:", "options": ["because of", "although / even with", "therefore", "in order to"], "answer": "B", "why": "Despite introduz contraste: apesar de.", "tip": ""}, {"cat": "vocabulary", "prompt": "If a result is <strong>unlikely</strong>, it is:", "options": ["certain", "already finished", "not probable", "required"], "answer": "C", "why": "Unlikely = improvável.", "tip": ""}, {"cat": "vocabulary", "prompt": "A <strong>requirement</strong> is something you:", "options": ["prefer casually", "avoid forever", "buy cheaply", "must have or do"], "answer": "D", "why": "Requirement = exigência/requisito.", "tip": ""}, {"cat": "vocabulary", "prompt": "<strong>Currently</strong> means:", "options": ["at the present time", "correctly", "in the past", "with force"], "answer": "A", "why": "Cuidado com falso cognato: currently = atualmente; não é 'corretamente'.", "tip": ""}, {"cat": "vocabulary", "prompt": "<strong>Eventually</strong> means:", "options": ["possibly", "in the end / after some time", "by accident", "rarely"], "answer": "B", "why": "Eventually = finalmente/depois de um tempo; não é 'eventualmente' no sentido de talvez.", "tip": ""}, {"cat": "vocabulary", "prompt": "If a store gives a <strong>refund</strong>, it:", "options": ["changes your schedule", "repairs your house", "returns your money", "adds interest"], "answer": "C", "why": "Refund = reembolso.", "tip": ""}, {"cat": "vocabulary", "prompt": "The word <strong>whereas</strong> signals:", "options": ["cause", "addition", "example", "contrast"], "answer": "D", "why": "Whereas = enquanto que, usado para contraste.", "tip": ""}, {"cat": "vocabulary", "prompt": "If something is <strong>optional</strong>, it is:", "options": ["not required", "forbidden", "expensive", "already included"], "answer": "A", "why": "Optional = opcional; você pode fazer, mas não é obrigatório.", "tip": ""}, {"cat": "vocabulary", "prompt": "To <strong>point out</strong> something means to:", "options": ["ignore it", "mention or indicate it", "pay for it", "leave quickly"], "answer": "B", "why": "Phrasal verb: point out = apontar, mencionar.", "tip": ""}, {"cat": "vocabulary", "prompt": "To <strong>figure out</strong> a problem means to:", "options": ["create a drawing", "cancel it", "understand or solve it", "make it worse"], "answer": "C", "why": "Figure out = entender/resolver.", "tip": ""}, {"cat": "vocabulary", "prompt": "The adjective <strong>reliable</strong> describes something that is:", "options": ["tiny", "temporary", "confusing", "trustworthy"], "answer": "D", "why": "Reliable source = fonte confiável.", "tip": ""}, {"cat": "vocabulary", "prompt": "The noun <strong>evidence</strong> means:", "options": ["information that supports a conclusion", "a personal preference", "a type of furniture", "an empty schedule"], "answer": "A", "why": "Evidence = evidência/prova/dado que sustenta uma conclusão.", "tip": ""}, {"cat": "vocabulary", "prompt": "If a paragraph <strong>supports</strong> a claim, it:", "options": ["deletes it", "gives reasons or examples for it", "changes the topic completely", "hides the conclusion"], "answer": "B", "why": "Support = dar suporte com razões, dados ou exemplos.", "tip": ""}, {"cat": "mixed", "prompt": "Choose the best completion: <br>By the time we arrived, the lecture ______.", "options": ["already begins", "has already beginning", "had already begun", "will already begin"], "answer": "C", "why": "By the time + past action pede past perfect para evento anterior.", "tip": ""}, {"cat": "mixed", "prompt": "Choose the best completion: <br>She spoke slowly ______ everyone could understand the instructions.", "options": ["despite", "whereas", "unless", "so that"], "answer": "D", "why": "So that = para que, expressa propósito.", "tip": ""}, {"cat": "mixed", "prompt": "Reading skill: when a question asks for the <strong>main idea</strong>, you should first look for:", "options": ["the overall point repeated or developed in the whole passage", "one number in the middle", "the longest word", "the answer choice with the same words only"], "answer": "A", "why": "Main idea é o sentido global, não um detalhe isolado.", "tip": ""}, {"cat": "mixed", "prompt": "Listening skill: if an answer choice repeats a word from the audio but changes the meaning, it is often:", "options": ["always correct", "a distractor", "the main idea", "a synonym"], "answer": "B", "why": "MET usa distratores com palavras ouvidas, mas conclusões erradas.", "tip": ""}, {"cat": "mixed", "prompt": "Choose the best completion: <br>The students were interested in the workshop, ______ it was longer than expected.", "options": ["because", "therefore", "although", "so that"], "answer": "C", "why": "Although introduz contraste.", "tip": ""}, {"cat": "mixed", "prompt": "Choose the best completion: <br>I would rather ______ at home tonight.", "options": ["to stay", "staying", "stayed", "stay"], "answer": "D", "why": "Would rather + base verb.", "tip": ""}, {"cat": "mixed", "prompt": "Vocabulary in context: <br>In 'The policy led to significant changes,' <strong>led to</strong> means:", "options": ["caused", "followed", "avoided", "measured"], "answer": "A", "why": "Lead to = causar/resultar em.", "tip": ""}, {"cat": "mixed", "prompt": "Choose the best completion: <br>The people ______ live next door are very friendly.", "options": ["which", "who", "where", "whose"], "answer": "B", "why": "Who para pessoas.", "tip": ""}, {"cat": "mixed", "prompt": "Choose the best completion: <br>The file ______ yesterday should be reviewed again.", "options": ["submitting", "submits", "submitted", "to submitting"], "answer": "C", "why": "Reduced passive relative clause: the file submitted yesterday = the file that was submitted yesterday.", "tip": ""}, {"cat": "mixed", "prompt": "Strategy: In a detail question, the safest approach is to:", "options": ["choose the most general answer", "ignore names and dates", "pick the longest option", "return to the exact part of the text/audio notes where the detail appears"], "answer": "D", "why": "Detalhe exige localização precisa, não intuição.", "tip": ""}];
+const KEY = TEACHER_MODE ? 'met-ingles-professor-answers' : 'met-ingles-aluno-answers';
+let answers = JSON.parse(localStorage.getItem(KEY) || '{}');
+let fontScale = Number(localStorage.getItem('met-font-scale') || '1');
+document.documentElement.style.setProperty('--font-scale', fontScale);
+
+function letter(i){ return String.fromCharCode(65+i); }
+function save(){ localStorage.setItem(KEY, JSON.stringify(answers)); updateProgress(); }
+function updateProgress(){
+  const total = QUESTIONS.length;
+  const done = Object.keys(answers).length;
+  const pct = total ? (done/total)*100 : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${done} de ${total} respondidas`;
+}
+
+// Oculta a conversa escrita para forçar o aluno a ouvir, deixando apenas a "Question:"
+function listeningQuestionOnly(html){
+  const match = html.match(/<em>\s*Question:\s*<\/em>\s*([\s\S]*)$/i);
+  if(match) return '<em>Question:</em> ' + match[1].trim();
+  return html;
+}
+
+// Gera os botões de áudio customizados
+function listeningPlayerMarkup(index){
+  return '<div class="listening-player" data-player-q="' + index + '"><button type="button" class="listen-play" data-q="' + index + '">▶ Ouvir áudio</button><button type="button" class="listen-stop">⏹ Parar</button><span class="voice-chip">MP3 Oficial</span></div>';
+}
+
+function promptMarkup(q){
+  if(q.cat !== 'listening') return q.prompt;
+  return listeningPlayerMarkup(q.idx) + listeningQuestionOnly(q.prompt);
+}
+
+// ==========================================
+// CONTROLE DE ÁUDIO NATIVO (HTML5 Audio API)
+// ==========================================
+let currentAudio = null;
+let currentAudioButton = null;
+
+function stopListeningAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+  document.querySelectorAll('.listening-player.playing').forEach(el => el.classList.remove('playing'));
+  currentAudio = null;
+  currentAudioButton = null;
+}
+
+function playListeningAudio(index) {
+  // Para qualquer áudio que já esteja tocando
+  stopListeningAudio();
+  
+  // Destaca o player visualmente
+  const player = document.querySelector('[data-player-q="' + index + '"]');
+  if (player) player.classList.add('playing');
+  currentAudioButton = player;
+
+  // Como o array QUESTIONS começa no índice 0 e os arquivos começam em 1
+  const audioNumber = index + 1;
+  const audioPath = `sounds/questao_${audioNumber}.mp3`;
+
+  currentAudio = new Audio(audioPath);
+  
+  currentAudio.play().catch(e => {
+    alert("Erro ao reproduzir o áudio. Verifique se o arquivo '" + audioPath + "' existe na pasta correta.");
+    stopListeningAudio();
+  });
+
+  // Tira o destaque quando o áudio acaba
+  currentAudio.onended = () => {
+    stopListeningAudio();
+  };
+}
+
+function renderExercises(){
+  document.querySelectorAll('.exercise').forEach(container => {
+    const cat = container.dataset.cat;
+    // O map abaixo preserva o index global da questão original
+    const qs = QUESTIONS.map((q, idx) => ({...q, idx})).filter(q => q.cat === cat);
+    container.innerHTML = qs.map(q => {
+      const selected = answers[q.idx];
+      const options = q.options.map((opt, i) => {
+        const l = letter(i);
+        const checked = selected === l ? 'checked' : '';
+        const selClass = selected === l ? 'selected' : '';
+        return `<label class="option ${selClass}"><input type="radio" name="q${q.idx}" value="${l}" ${checked} data-q="${q.idx}"><strong>${l})</strong><span>${opt}</span></label>`;
+      }).join('');
+      const teacher = TEACHER_MODE ? `<div class="teacher-answer"><strong>Resposta: ${q.answer}) ${q.options[q.answer.charCodeAt(0)-65]}</strong><br>${q.why}${q.tip ? `<div class="tip"><strong>Dica:</strong> ${q.tip}</div>` : ''}</div>` : '';
+      return `<article class="question-card" id="q${q.idx}">
+        <div class="q-head"><span class="q-num">Questão ${q.idx+1}</span><span class="q-topic">${q.cat}</span></div>
+        <div class="prompt">${promptMarkup(q)}</div>
+        <div class="options">${options}</div>
+        ${teacher}
+      </article>`;
+    }).join('');
+  });
+
+  // Eventos de seleção de resposta
+  document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.addEventListener('change', e => {
+      const q = e.target.dataset.q;
+      answers[q] = e.target.value;
+      const card = e.target.closest('.question-card');
+      card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      e.target.closest('.option').classList.add('selected');
+      save();
+    });
+  });
+
+  // Eventos de Play/Stop do Áudio MP3
+  document.querySelectorAll('.listen-play').forEach(btn => {
+    btn.addEventListener('click', e => playListeningAudio(Number(e.currentTarget.dataset.q)));
+  });
+  document.querySelectorAll('.listen-stop').forEach(btn => {
+    btn.addEventListener('click', stopListeningAudio);
+  });
+  updateProgress();
+}
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const next = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.body.dataset.theme = next;
+  localStorage.setItem('met-theme', next);
+});
+document.body.dataset.theme = localStorage.getItem('met-theme') || 'light';
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if(confirm('Limpar todas as respostas marcadas neste HTML?')){
+    answers = {};
+    localStorage.removeItem(KEY);
+    renderExercises();
+  }
+});
+
+document.getElementById('fontMinus').addEventListener('click', () => {
+  fontScale = Math.max(.85, +(fontScale - .05).toFixed(2));
+  document.documentElement.style.setProperty('--font-scale', fontScale);
+  localStorage.setItem('met-font-scale', fontScale);
+});
+
+document.getElementById('fontPlus').addEventListener('click', () => {
+  fontScale = Math.min(1.35, +(fontScale + .05).toFixed(2));
+  document.documentElement.style.setProperty('--font-scale', fontScale);
+  localStorage.setItem('met-font-scale', fontScale);
+});
+
+renderExercises();
+</script>
+</body>
+</html>
